@@ -1,0 +1,143 @@
+<div class="page-header" id="detail">
+	<div class="col-md-6 col-xs-12">
+		<h3><span translate>view.cadastro.usuario</span><span class="small">&nbsp;[&nbsp;<a onclick="window.history.back()">Voltar&nbsp;<i
+				class="fa fa-reply" aria-hidden="true"></i></a>&nbsp;] </span></h3>
+	</div>
+	<div class="clearfix"></div>
+</div>
+<div class="container-fluid">
+<div class="panel ">
+	<div class="panel-heading" translate><h4>view.usuario</h4></div>
+	<div class="panel-body">
+		<form novalidate id="UsuarioForm" name="UsuarioForm" role="form">
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label for="nome" translate>view.nome</label>
+						<span class="form-required"> *</span>
+						<input id="nome" name="nome" type="text" required class="form-control"
+							   ng-model="usuario.nome" maxlength="50" autocomplete="off"
+							   uppercase
+							   placeholder="Informe o Nome"
+							   ng-disabled="!isEditable()"></input>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label for="sobrenome" translate>view.sobrenome</label>
+						<input id="sobrenome" name="sobrenome" type="text" class="form-control"
+							   uppercase
+							   ng-model="usuario.sobrenome" maxlength="50" autocomplete="off"
+							   placeholder="Informe o Sobrenome"
+							   ng-disabled="!isEditable()"></input>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label for="cpf" translate>view.cpf</label>
+						<span class="form-required"> *</span>
+						<input id="cpf" name="cpf" type="text" required class="form-control"
+							   ng-model="usuario.cpf" ui-mask="999.999.999-99"
+							   ng-disabled="!isEditable()" ng-cpf></input>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label for="email" translate>view.email</label>
+						<input id="email" name="email" type="email" class="form-control" ng-pattern="/^[a-zA-Z]+[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z.]{2,5}[A-Za-z]{0,3}$/"
+							   ng-model="usuario.email" maxlength="50" autocomplete="off"
+							   placeholder="Informe o Email"
+							   ng-disabled="!isEditable()"></input>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6" ng-if="usuario.id == undefined">
+					<div class="form-group">
+						<label for="senha" translate>view.senha</label>
+						<span class="form-required"> *</span>
+						<input id="senha" name="senha" type="password" required class="form-control"
+							   ng-model="usuario.senha" ng-minlength="6" maxlength="100"
+							   uib-tooltip="A senha deve possuir pelo menos 6 caracteres."
+							   placeholder="Informe a Senha"></input>
+					</div>
+				</div>
+				<div class="col-md-6" ng-if="usuario.id == undefined">
+					<div class="form-group">
+						<label for="senhaConfirmada" translate>view.confirme.senha</label>
+						<span class="form-required"> *</span>
+						<input id="senhaConfirmada" name="senhaConfirmada" type="password" required class="form-control"
+							   ng-model="usuario.senhaConfirmada" ng-class="{'campo-invalido': usuario.senhaConfirmada.length > 0 && usuario.senhaConfirmada != usuario.senha}"
+							   placeholder="Confirme a Senha"></input>
+						<span class="form-required" ng-show="usuario.senhaConfirmada.length > 0 && usuario.senhaConfirmada != usuario.senha">As senhas não são iguais.</span>
+					</div>
+				</div>
+			</div>
+		</div>	
+		<div class="col-md-3">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label translate>view.perfil</label>
+						<span class="form-required"> *</span>
+						<ui-select ng-model="usuario.perfil" name="perfil" id="perfil"
+								   ng-disabled="!isEditable()">
+							<ui-select-match placeholder='---'>{{$select.selected.nome}}</ui-select-match>
+							<ui-select-choices repeat="perfil in perfis | filter: $select.search">
+								<span ng-bind-html="perfil.nome"></span>
+							</ui-select-choices>
+						</ui-select>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<p class="info-campo">
+						{{usuario.perfil.descricao}}
+					</p>
+				</div>
+			</div>	
+		</div>	
+		<div class="col-md-3">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label translate>view.unidades</label>
+					<span class="form-required"> *</span>
+					<ul class="list-group checked-list-box">
+						<li class="list-group-item" ng-repeat="unidade in unidades">
+							<span id="unidade_{{unidade.id}}" tabindex="0"
+								  ng-style="{true: {cursor: 'pointer'}, false: {cursor: 'not-allowed'}}[isEditable()]"
+								  ng-class="hasUnidade(unidade.id)"
+								  ng-click="checkUnidade($event, unidade.id, 'click')"
+								  ng-keyup="checkUnidade($event, unidade.id, 'keyup')"></span>
+							{{unidade.nome}}
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>	
+		</div>
+
+
+			</div>
+			<hr>
+			<div class="form-group">
+				<div class="col-md-12 col-xs-12 barra-comandos-rodape">
+					<a id="cancel" name="cancel" class="btn btn-default" onclick="window.history.back()">
+							<i class="fa fa-reply" aria-hidden="true"></i>&nbsp;Voltar
+					</a>
+					<button id="saveUsuario" name="saveUsuario" class="btn btn-verde"
+							ng-disabled="UsuarioForm.$invalid || desabilitaSalvar()"
+							ng-click="save()"
+							has-role="ROLE_EDITAR_USUARIO"
+							ng-if="isEditable()">
+							<span class="glyphicon glyphicon-ok"></span> Salvar
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+</div>

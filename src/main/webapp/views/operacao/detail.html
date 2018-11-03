@@ -1,0 +1,288 @@
+<div class="page-header" id="detail">
+	<div class="col-md-4 col-lg-4 col-xs-12 titulo-pagina">
+		<div class="col-md-12">
+		<h3><span translate>view.cadastro.operacao</span>&nbsp;
+			<button id="next" type="button" class="btn btn-primary" ng-click="previousOperation()">
+				<span class="glyphicon glyphicon-arrow-left" title="Previous"></span>
+			</button>
+			<button id="previous" type="button" class="btn btn-primary" ng-click="nextOperation()">
+				<span class="glyphicon glyphicon-arrow-right" title="Next"></span>
+			</button>
+		</h3>
+		</div>
+	</div>
+
+	<div class="col-md-8 col-lg-8 col-xs-12 barra-comandos-superior" ng-if="model.encerrada">
+		<div class="col-md-2 col-xs-4  col-sm-offset-6" ng-if="model.finalidade == 'COMPRA'">
+			<div class="placar">
+				<div class="col-md-4 col-xs-4" ng-class="{'operacao-up': model.precoEntrada < model.precoSaida, 'operacao-down': model.precoEntrada > model.precoSaida}"><span class="glyphicon" ng-class="{'glyphicon-arrow-up': model.precoEntrada < model.precoSaida, 'glyphicon-arrow-down': model.precoEntrada > model.precoSaida}"></span></div>
+				<div class="col-md-8 col-xs-8 valor-placar">{{getPercentual()}}</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="col-md-2 col-xs-4  col-sm-offset-6" ng-if="model.finalidade == 'VENDA'">
+			<div class="placar">
+				<div class="col-md-4 col-xs-4" ng-class="{'operacao-up': model.precoEntrada > model.precoSaida, 'operacao-down': model.precoEntrada < model.precoSaida}"><span class="glyphicon" ng-class="{'glyphicon-arrow-up': model.precoEntrada > model.precoSaida, 'glyphicon-arrow-down': model.precoEntrada < model.precoSaida}"></span></div>
+				<div class="col-md-8 col-xs-8 valor-placar">{{getPercentual()}}</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="col-md-2 col-xs-4">
+			<div class="placar" uib-tooltip="">
+				<div class="col-md-4 col-xs-4 programadas"><span class="glyphicon glyphicon-calendar"></span></div>
+				<div class="col-md-8 col-xs-8 valor-placar">{{getDifferenceDate()}} dia(s)</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="col-md-2 col-xs-4">
+			<div class="placar" uib-tooltip="">
+				<div class="col-md-4 col-xs-4 valor-operacao"><span class="glyphicon glyphicon-usd"></span></div>
+				<div class="col-md-8 col-xs-8 valor-placar">{{getValorFinalOperacao() | decimal}}</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-8 col-xs-12 barra-comandos" ng-if="model.id && !model.encerrada">
+		<span>
+			<button role="button" class="btn itens-concluidas" uib-tooltip="Finalizar"
+					has-role="ROLE_EDITAR_OPERACAO" ng-click="openModalFinalizar();">
+				<span class="glyphicon glyphicon-ok"></span>
+			</button>
+		</span>
+	</div>
+</div>
+
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<span ng-if="model.id">#{{model.codigo}} - {{model.dataCadastro | dataHoraShort}}</span>
+		<span ng-if="!model.id" translate>view.nova.operacao</span>
+	</div>
+	<div class="panel-body">
+
+		<hr/>
+
+		<form id="OperacaoForm" name="OperacaoForm" role="form">
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="finalidade" translate>view.finalidade</label>
+						<select class="form-control" ng-model="model.finalidade" id="finalidade">
+							<option value="COMPRA">COMPRA</option>
+							<option value="VENDA">VENDA</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-lg-2">
+					<div class="form-group">
+						<label for="papel" translate>view.papel</label>
+						<span class="form-required"> *</span>
+						<input id="papel" name="papel" type="text" class="form-control" uppercase
+							   ng-model="model.papel" ng-required="true"/>
+					</div>
+				</div>
+				<div class="col-lg-2">
+					<div class="form-group">
+						<label translate>view.inicio</label>
+						<span class="form-required"> *</span>
+                        <date-time ng-model="model.dataInicio" name="dataInicio" id="dataInicio" ng-disabled="false"
+                                   ng-required="true" max-date="today"/>
+					</div>
+				</div>
+
+				<div class="col-lg-2" ng-if="model.encerrada">
+					<div class="form-group">
+						<label translate>view.termino</label>
+						<span class="form-required"> *</span>
+                        <date-time ng-model="model.dataTermino" name="dataTermino" id="dataTermino" ng-disabled="false"
+                                   max-date="today"/>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-1">
+					<div class="form-group">
+						<label for="estoqueAtual" translate>view.quantidade</label>
+						<span class="form-required"> *</span>
+						<input id="estoqueAtual" name="estoqueAtual" type="text" class="form-control" placeholder="0,00"
+							   ng-model="model.quantidade" ng-disabled="material.id" ng-required="true"
+							   ui-number-mask="0"/>
+					</div>
+				</div>
+
+				<div class="col-lg-2">
+					<div class="form-group">
+						<label for="precoEntrada" translate>view.valor.entrada</label>
+						<span class="form-required"> *</span>
+						<input id="precoEntrada" name="precoEntrada" type="text" class="form-control" placeholder="0,00"
+							   ng-model="model.precoEntrada" ng-disabled="material.id" ng-required="true"
+							   ui-number-mask="2"/>
+					</div>
+				</div>
+
+
+				<div class="col-lg-2">
+					<div class="form-group">
+						<label for="precoStop" translate>view.valor.stop</label>
+						<span class="form-required"> *</span>
+						<input id="precoStop" name="precoStop" type="text" class="form-control" placeholder="0,00"
+							   ng-model="model.stop" ng-disabled="material.id" ng-required="true"
+							   ui-number-mask="2"/>
+					</div>
+				</div>
+
+				<div class="col-lg-2">
+					<div class="form-group">
+						<label for="target" translate>view.valor.target</label>
+						<span class="form-required"> *</span>
+						<input id="target" name="target" type="text" class="form-control" placeholder="0,00"
+							   ng-model="model.target" ng-disabled="material.id" ng-required="true"
+							   ui-number-mask="2"/>
+					</div>
+				</div>
+
+				<div class="col-lg-2" ng-if="model.encerrada">
+					<div class="form-group">
+						<label for="target" translate>view.valor.saida</label>
+						<span class="form-required"> *</span>
+						<input id="target" name="target" type="text" class="form-control" placeholder="0,00"
+							   ng-model="model.precoSaida" ng-disabled="material.id" ng-required="true"
+							   ui-number-mask="2"/>
+					</div>
+				</div>
+
+				<div class="col-md-3">
+					<div class="form-group">
+						<label translate>view.setup</label>
+						<div class="form-group">
+							<select class="form-control" ng-options="key as val for (key, val) in setups"
+									ng-required="true" ng-model="model.setup" id="setup">
+								<option value="">---</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-2">
+					<div class="form-group">
+						<label for="estoqueAtual" translate>Total Entrada</label>
+						<span class="form-control" style="background-color: rgba(169, 169, 169, 0.43);">{{model.precoEntrada && model.quantidade ? model.precoEntrada * model.quantidade : 0 | realbrasileiro }}</span>
+					</div>
+				</div>
+
+				<div class="col-lg-2">
+					<div class="form-group">
+						<label for="estoqueAtual" translate>Margem Stop</label>
+						<span class="form-control" style="background-color: rgba(169, 169, 169, 0.43);">{{model.precoEntrada && model.stop ? ((model.precoEntrada / model.stop) - 1) * 100 : 0 | percentual }}</span>
+					</div>
+				</div>
+
+				<div class="col-lg-2">
+					<div class="form-group">
+						<label for="estoqueAtual" translate>Gain Estimado</label>
+						<span class="form-control" style="background-color: rgba(169, 169, 169, 0.43);">{{model.target && model.precoEntrada ? ((model.target / model.precoEntrada ) - 1) * 100 : 0 | percentual }}</span>
+					</div>
+				</div>
+
+				<div class="col-lg-2" ng-if="model.encerrada">
+					<div class="form-group">
+						<label for="estoqueAtual" translate>Total Saída</label>
+						<span class="form-control" style="background-color: rgba(169, 169, 169, 0.43);">{{model.precoEntrada && model.quantidade ? model.precoSaida * model.quantidade : 0 | realbrasileiro }}</span>
+					</div>
+				</div>
+
+			</div>
+
+
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label for="ferramentas" translate>view.observacao.entrada</label>
+						<textarea id="ferramentas" name="observacao" class="form-control"
+								  ng-model="model.descricaoInicio"
+								  cols="100" rows="10"
+								  placeholder="Descreva o que levou ao trade" maxlength="800"/>
+					</div>
+					<div class="col-lg-6">
+						<carousel images="imagensEntrada" entidade="model"
+								  show-add="imagensEntrada.length < 6"
+								  show-remove="imagensEntrada.length > 0"
+								  show-zoom="imagensEntrada.length > 0" show-control="true" id="1"/>
+					</div>
+				</div>
+
+				<div class="col-lg-6" ng-if="model.encerrada">
+					<div class="form-group">
+						<label for="ferramentas" translate>view.observacao.saida</label>
+						<textarea id="ferramentas" name="observacao" class="form-control"
+								  ng-model="model.descricaoTermino"
+								  cols="100" rows="10"
+								  placeholder="Descreva o que levou ao trade" maxlength="800"/>
+					</div>
+					<div class="col-lg-6">
+						<carousel images="imagensSaida" entidade="model"
+								  show-add="imagensSaida.length < 6"
+								  show-remove="imagensSaida.length > 0"
+								  show-zoom="imagensSaida.length > 0" show-control="true" id="2"/>
+					</div>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+
+<div class="panel panel-default" ng-if="model.id">
+    <div class="panel-heading" data-toggle="collapse" data-target="#stopHistory" translate>view.stops.history</div>
+    <div id="stopHistory" class="panel-collapse collapse collapse">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-6">
+					<h4>Stop Loss</h4>
+					<div ng-show="totalEntradas == 0" class="well" translate>
+						info.nenhum.registro
+					</div>
+					<div class="panel table-resultados">
+						<table ng-table="tableHistSaidas" ng-show="true" class="table ng-table-responsive table-hover">
+							<tr ng-repeat="stop in model.stopLoss">
+								<td data-title="'Data/Hora'">{{stop.data | dataHoraShort}}</td>
+								<td data-title="'Valor R$'">{{stop.valor | currency }}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<h4>Stop Gain</h4>
+					<div class="panel table-resultados">
+						<div class="panel table-resultados">
+							<table ng-table="tableHistTargets" ng-show="true" class="table ng-table-responsive table-hover">
+								<tr ng-repeat="stop in model.stopGain">
+									<td data-title="'Data/Hora'">{{stop.data | dataHoraShort}}</td>
+									<td data-title="'Valor R$'">{{stop.valor | currency }}</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<hr>
+<div class="form-group">
+	<div class="col-md-12 col-xs-12 barra-comandos-rodape">
+		<a id="cancel" name="cancel" class="btn btn-default" ui-sref="operacao">
+			<i class="fa fa-reply" aria-hidden="true"></i>&nbsp;Voltar
+		</a>
+		<button id="saveOperacao" name="saveOperacao" class="btn btn-verde"
+				ng-disabled="OperacaoForm.$invalid"
+				ng-click="save()"
+				has-role="ROLE_EDITAR_OPERACAO">
+			<span class="glyphicon glyphicon-ok"></span>&nbsp;Salvar
+		</button>
+	</div>
+</div>

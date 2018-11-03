@@ -1,0 +1,97 @@
+body {
+	background-color:#f1f1f1;
+	background-position:center center;
+	background-size: cover;
+	background-repeat: repeat-y;
+	color:#333333;
+	height:100%;
+}
+
+label {
+	font-weight:normal;
+}
+
+hr {
+	opacity: 0.3;
+}
+
+a {
+	cursor:pointer;
+	text-decoration:underline;
+}
+
+footer {
+	position:relative;
+    width: 100%;
+    font-size:0.8em;
+    margin-top:20px;
+}
+
+footer img {
+	max-width: 220px !important;
+}
+
+.alert {
+	border-radius:0;
+}
+
+#informacoes {
+	background-color: #224d9b;
+	color:#fff;
+	padding-top:12px;
+	margin-top:5px;
+	border-radius:10px;
+}
+
+.brand-login img {
+	max-width:250px;
+	margin-bottom:15px;
+}
+
+.login-painel {
+	background-color:rgba(13, 14, 14, 0.8);
+	padding:1em;
+	border-radius:10px;
+	-webkit-box-shadow: 1px 1px 12px 1px rgba(100,100,100,0.6);
+	box-shadow: 1px 1px 12px 1px rgba(100,100,100,0.6);
+	color:#fff;
+}
+
+.login-painel label, .login-painel a {
+	color:#fff;
+	
+}
+.btn-acao {
+	background-color:#00a54f;
+	border-color:#00a54f;
+	color:#fff;
+}
+.btn-acao:hover {
+	background-color:#018741;
+	border-color:#018741;
+	color:#fff;
+}
+
+.loading {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(250,250,250,.8);
+	z-index: 1001;
+}
+
+.loading img {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    top: 47%;
+    margin-top:-50px;
+    left: 50%;
+    margin-left:-50px;
+    z-index:9999;	
+}

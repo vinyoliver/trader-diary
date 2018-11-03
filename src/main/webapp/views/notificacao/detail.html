@@ -1,0 +1,167 @@
+<div class="page-header">
+	<div class="col-md-6 col-xs-12">
+		<h3><span translate>view.notificacao</span>&nbsp;	
+	   	   <span class="small">&nbsp;[&nbsp;<a  onclick="window.history.back()">Voltar&nbsp;<i class="fa fa-reply" aria-hidden="true"></i></a>&nbsp;] </span>
+		</h3>
+	</div>
+	<div class="clearfix"></div>
+</div>
+<div class="container-fluid">
+	<div class="panel ">
+		<div class="panel-heading"><h4 translate>view.cadastro.notificacoes</h4></div>
+		<div class="panel-body">
+			<form novalidate id="notificacaoForm" name="notificacaoForm" role="form">
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label translate>view.titulo</label>
+							<span class="form-required"> *</span>
+							<input id="titulo" name="titulo" type="text" required class="form-control"
+								   ng-model="notificacao.titulo" 
+								   placeholder="INFORME O TÍTULO" maxlength="100"
+								   ng-disabled="!isEditable()"/>
+						</div>
+					</div>
+					<div class="col-lg-3" ng-show="notificacao.id">
+						<div class="form-group">
+							<label for="dataEnvio" translate>view.data.envio</label>
+							<div class="input-group">
+								<date-time ng-model="notificacao.dataEnvio" id="dataEnvio" name="dataEnvio"
+								ng-disabled="true"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3" ng-show="notificacao.id">
+						<div class="form-group">
+						<label for="status" translate>view.status</label>
+						<input id="status" name="status" type="text" class="form-control"
+								   ng-model="notificacao.descricaoStatus"
+								   ng-disabled="true"/>
+					</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="form-group">
+							<label for="mensagemEditar" translate>view.mensagem</label>
+							<span class="form-required"> *</span>
+							<textarea id="mensagemEditar" class="form-control" ui-tinymce="editorOptions" required
+									  ng-model="notificacao.mensagem" rows="10" ng-if="!notificacao.id"/>
+
+							<p id="mensagemVisualizar" class="form-control modal-mensagem-tiny"
+							   ui-tinymce="viewerOptions" ng-disabled="true"
+							   ng-model="notificacao.mensagem" ng-if="notificacao.id"/>
+						</div>
+					</div>
+				</div>
+
+				<div class="row" ng-hide="notificacao.id">
+					<div class="col-lg-2 col-md-2"></div>
+					<div class="col-lg-8 col-md-8">
+						<div class="col-lg-4" ng-if="empresas.length > 1">
+							<div class="form-group">
+								<label translate>view.empresa</label>
+								<ui-select ng-model="usuarioFilter.empresa" name="empresa" id="empresa" ng-change="buscarUnidades()">
+									<ui-select-match placeholder='TODOS' allow-clear="true">{{$select.selected.nome}}</ui-select-match>
+									<ui-select-choices repeat="empresa in empresas | filter: $select.search">
+										<span ng-bind-html="empresa.nome"></span>
+									</ui-select-choices>
+								</ui-select>
+							</div>
+						</div>
+						
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label translate>view.unidade</label>
+								<ui-select ng-model="usuarioFilter.unidadeSelecionada" name="unidade" id="unidade" ng-change="buscarUsuarios()">
+									<ui-select-match placeholder='TODOS' allow-clear="true">{{$select.selected.nome}}</ui-select-match>
+									<ui-select-choices repeat="unidade in unidades | filter: $select.search">
+										<span ng-bind-html="unidade.nome"></span>
+									</ui-select-choices>
+								</ui-select>
+							</div>
+						</div>
+						
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label translate>view.perfil</label>
+								<ui-select ng-model="usuarioFilter.perfil" name="perfil" id="perfil" ng-change="buscarUsuarios()">
+									<ui-select-match placeholder='TODOS' allow-clear="true">{{$select.selected.nome}}</ui-select-match>
+									<ui-select-choices repeat="perfil in perfis | filter: $select.search">
+										<span ng-bind-html="perfil.nome"></span>
+									</ui-select-choices>
+								</ui-select>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-2"></div>
+				</div>
+				
+				<div class="row" ng-hide="notificacao.id">
+
+					<div class="col-lg-12">
+						<div class="form-group">
+							<select
+								style="height:184px;"
+								class="form-control" 
+		   					    multiple
+							    bs-duallistbox
+							    class="usuariosDualList"
+								ng-model="notificacaoUsuarios"
+								ng-options='usuario as (usuario.nomeUsuario) for usuario in usuarios track by usuario.id'
+								info-all="Usuário(s): {0}">
+							</select>
+						</div>
+					</div>
+					
+
+				</div>
+				<h3 ng-show="notificacao.id">Usuários Notificados</h3>
+				<div class="row" ng-show="notificacao.id">
+					<div class="col-lg-2">
+						<div class="form-group">
+							<label for="status" translate>view.exibir</label>
+							<select class="form-control" ng-model="filtro.lida" id="status" ng-change="carregarUsuarios()">
+								<option value="">TODAS</option>
+								<option value="true">LIDAS</option>
+								<option value="false">NÃO LIDAS</option>
+							</select>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="panel-body table-resultados">
+						<div ng-show="(totalNotificacoes == 0)" class="well" translate>
+							info.nenhum.registro
+						</div>
+						<table ng-table="tableNotificacoes" class="table ng-table-responsive table-hover" ng-show="(totalNotificacoes > 0)">
+							<tr ng-repeat="notificacaoUsuario in $data">
+								<td data-title="'Empresa'">{{notificacaoUsuario.usuario.empresa.nome}}</td>
+								<td data-title="'Perfil'">{{notificacaoUsuario.usuario.perfil.nome}}</td>
+								<td data-title="'Usuário'">{{notificacaoUsuario.usuario.nome}}</td>
+								<td data-title="'Data/Hora Leitura'">{{notificacaoUsuario.dataLeitura |
+									dataHoraShort}}
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<hr>
+				<div class="form-group">
+					<div class="col-md-12 col-xs-12 barra-comandos-rodape">
+						<a id="cancel" name="cancel" class="btn btn-default" onclick="window.history.back()">
+							<i class="fa fa-reply" aria-hidden="true"></i>&nbsp;Voltar
+						</a>
+						<button id="sendNotificacao" name="sendNotificacao" class="btn btn-verde"
+								ng-disabled="notificacaoForm.$invalid || notificacaoUsuarios.length < 1"
+								ng-click="confirmarEnvio()"
+								ng-hide="notificacao.id">
+							<span class="glyphicon glyphicon-ok"></span> Enviar
+						</button>
+					</div>
+				</div>
+			</form>
+			
+
+		</div>
+	</div>
+</div>

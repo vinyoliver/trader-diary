@@ -1,0 +1,25 @@
+<div id="wrapper" ng-controller="MenuController">
+    <div id="alert-message" class="messages alert-message am-fade-and-slide-top"></div>
+
+	<!-- Page Template -->
+	<div id="container">
+        <div ng-include="'navbar.html'"></div>
+
+		<div class="loading">
+			<img alt="Loading" src="img/loading-squares.svg"/>
+		</div>
+
+		<div class="container-fluid dashboard" ng-if="isHome() && unidadeSelecionada">
+            <div ng-include="'views/dashboard/dashboard.html'"></div>
+		</div>
+		
+
+		<div class="view">
+			<div ui-view>
+				<!--CONTENT GOES HERE-->
+			</div>
+		</div>
+
+	</div>
+
+</div>

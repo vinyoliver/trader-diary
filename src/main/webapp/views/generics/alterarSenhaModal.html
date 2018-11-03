@@ -1,0 +1,58 @@
+<div class="modal" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span ng-click="$hide()" aria-hidden="true">&times;</span>
+					<span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" translate>modal.altera.senha</h4>
+			</div>
+			<div id="alert-message" class="alert-message"></div>
+			<div class="modal-body">
+				<form novalidate id="SenhaForm" name="SenhaForm" role="form">
+					<h5><span class="glyphicon glyphicon-hand-right"/> A senha deve ter entre 6 e 10 caracteres e ser
+						composta por letras e números</h5>
+					<div class="row" ng-if="usuario.admin == false">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label for="senhaAtual">Senha atual</label>
+								<span class="form-required"> *</span>
+								<input id="senhaAtual" name="senhaAtual" type="password" required class="form-control"
+									   ng-model="usuario.senhaAtual" ng-minlength="6" maxlength="10"
+									   placeholder="Informe a Senha Atual"></input>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label for="senhaNova">Nova senha</label>
+								<span class="form-required"> *</span>
+								<input id="senhaNova" name="senhaNova" type="password" required class="form-control"
+                                       ng-model="usuario.senhaNova" ng-minlength="6" maxlength="10"
+                                       placeholder="Informe a Nova Senha"></input>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label for="senhaConfirmada">Confirme a senha</label>
+								<span class="form-required"> *</span>
+								<input id="senhaConfirmada" name="senhaConfirmada" type="password" required class="form-control"
+									   ng-model="senhaConfirmada" ng-class="{'campo-invalido': senhaConfirmada.length > 0 && senhaConfirmada != usuario.senhaNova}"
+									   placeholder="Confirme a Nova Senha"></input>
+								<span class="form-required" ng-show="senhaConfirmada.length > 0 && senhaConfirmada != usuario.senhaNova">As senhas não são iguais.</span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" data-dismiss="modal" class="btn btn-default" ng-click="$hide()"><span class="glyphicon glyphicon-remove"></span>&nbsp;Fechar</button>
+				<button type="button" ng-disabled="SenhaForm.$invalid || senhaConfirmada != usuario.senhaNova" class="btn btn-verde" ng-click="salvarNovaSenha()"><span class="glyphicon glyphicon-ok"></span>&nbsp;Salvar</button>
+			</div>
+		</div>
+	</div>
+</div>

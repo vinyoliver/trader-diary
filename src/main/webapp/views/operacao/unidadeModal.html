@@ -1,0 +1,203 @@
+<div class="modal" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span ng-click="$hide()" aria-hidden="true">&times;</span>
+					<span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" translate>view.cadastro.unidade</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div id="alert-message" class="alert-message">
+					</div>
+				</div>
+				<form novalidate id="unidadeForm" name="unidadeForm" role="form">
+					<div class="row">
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="nome" translate>view.nome</label>
+								<span class="form-required"> *</span>
+								<input id="nome" name="nome" type="text" required class="form-control"
+									   ng-model="unidade.nome"
+									   placeholder="Informe o Nome" uppercase required maxlength="100"
+									   ng-disabled="!editUnidade"/>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="cnpj" translate>view.cnpj</label>
+								<span class="form-required"> *</span>
+								<input id="cnpj" name="cnpj" type="text" required class="form-control"
+									   ng-model="unidade.cnpj" ng-cnpj
+									   translate uppercase ui-mask="99.999.999/9999-99" required
+									   ng-disabled="!editUnidade"/>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="inscricaoEstadual" translate>view.inscricao.estadual</label>
+								<input id="inscricaoEstadual" name="inscricaoEstadual" type="text"
+									   class="form-control"
+									   ng-model="unidade.inscricaoEstadual"
+									   placeholder="Informe a inscrição estadual" translate uppercase
+									   maxlength="20" ng-disabled="!editUnidade"/>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="tipoUnidade" translate>view.tipo.unidade</label>
+								<span class="form-required"> *</span>
+								<select class="form-control" ng-model="unidade.tipoUnidade" id="tipoUnidade"
+										ng-disabled="!editUnidade">
+									<option value="">---</option>
+									<option value="FILIAL">FILIAL</option>
+									<option value="MATRIZ">MATRIZ</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="segmento" translate>view.segmento</label>
+								<span class="form-required"> *</span>
+								<select class="form-control" ng-options="key as val for (key, val) in segmentos"
+										ng-model="unidade.segmento" id="segmento" ng-disabled="!editUnidade">
+									<option value="">---</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<h4 translate>view.localizacao</h4>
+
+					<div class="row">
+						<div class="col-lg-2">
+							<div class="form-group">
+								<label for="estado" translate>view.uf</label>
+								<span class="form-required"> *</span>
+								<select class="form-control" ng-model="unidade.estado.uf"
+										ng-options="estado as estado for estado in estados"
+										id="estado" ng-change="changeEstado()"
+										ng-disabled="!editUnidade">
+									<option value="">---</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label translate>view.cidade</label>
+								<span class="form-required"> *</span>
+								<ui-select ng-model="unidade.cidade" name="cidade" id="cidade" required
+										   ng-disabled="!editUnidade">
+									<ui-select-match placeholder='---'>{{$select.selected.nome}}</ui-select-match>
+									<ui-select-choices repeat="cidade in cidades | filter: $select.search">
+										<span ng-bind-html="cidade.nome"></span>
+									</ui-select-choices>
+								</ui-select>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label for="endereco" translate>view.endereco</label>
+								<span class="form-required"> *</span>
+								<input id="endereco" name="endereco" type="text"
+									   class="form-control"
+									   ng-model="unidade.endereco"
+									   placeholder="Informe o endereço" uppercase
+									   required
+									   maxlength="50" ng-disabled="!editUnidade"/>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<h4 translate>view.contato.unidade</h4>
+
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label for="nomeContato" translate>view.nome</label>
+								<span class="form-required"> *</span>
+								<input id="nomeContato" name="nome" type="text" class="form-control"
+									   ng-model="contatoUnidade.nome"
+									   placeholder="Informe o nome do contato" uppercase maxlength="100"
+									   ng-disabled="!editUnidade"/>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="cargoContato" translate>view.cargo</label>
+								<span class="form-required"> *</span>
+								<input id="cargoContato" name="cargo" type="text" class="form-control"
+									   ng-model="contatoUnidade.cargo"
+									   placeholder="CARGO DO CONTATO" maxlength="30"
+									   ng-disabled="!editUnidade" uppercase/>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="telefoneContato" translate>view.telefone</label>
+								<span class="form-required"> *</span>
+								<input id="telefoneContato" name="telefone" type="text"
+									   class="form-control"
+									   ng-model="contatoUnidade.telefone"
+									   ui-mask="(99) 99999999?9"
+									   max="15" ng-disabled="!editUnidade"/>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="emailContato" translate>view.email</label>
+								<input id="emailContato" name="email" type="email" class="form-control"
+									   ng-model="contatoUnidade.email" ng-pattern="/^[a-zA-Z]+[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-zA-Z.]{2,5}[A-Za-z]{0,3}$/"
+									   maxlength="50"
+									   ng-disabled="!editUnidade"/>
+							</div>
+						</div>
+						<div class="col-lg-2">
+							<div class="form-group">
+								<label></label>
+								<div>
+									<button id="Create" name="Create" class="btn btn-success new-button"
+                                            ng-click="adicionarContato()"
+                                            ng-disabled="!habilitarAdicionarContatoUnidade() || !unidadeForm.email.$valid" ng-if="editUnidade">
+										<span class="glyphicon glyphicon-plus-sign"></span> Adicionar
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<table ng-table="tableParams" ng-show="unidade.contatos.length > 0"
+						   class="table ng-table-responsive table-hover">
+						<tr ng-repeat="contato in unidade.contatos">
+							<td data-title="'Nome'">{{contato.nome}}</td>
+							<td data-title="'Cargo'">{{contato.cargo}}</td>
+							<td data-title="'Telefone'">{{contato.telefone}}</td>
+							<td data-title="'E-mail'">{{contato.email}}</td>
+							<td data-title="'Ações'" ng-if="editUnidade">
+								<a role="button" class="btn btn-azul" data-toggle="tooltip" data-placement="bottom" title="Editar"
+								   ng-click="editarContato($index)">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</a>
+								<a role="button" class="btn btn-azul" ng-click="removerContato($index)" data-toggle="tooltip" data-placement="bottom" title="Remover">
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" data-dismiss="modal" class="btn btn-default" ng-click="$hide()">
+				<span class="glyphicon glyphicon-remove"></span>&nbsp;Fechar</button>
+				<button ng-disabled='unidadeForm.$invalid' type="button" class="btn btn-verde"
+						ng-click="saveUnidade();" ng-if="editUnidade"><span class="glyphicon glyphicon-ok"></span>&nbsp;Salvar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,17 @@
+package com.traderdiary.model;
+
+public enum Setup {
+
+    CORRECAO_MM,
+    CRUZAMENTO_MM,
+    OCO,
+    OCO_INVERTIDO,
+    ROMPIMENTO_SUPORTE,
+    ROMPIMENTO_RESISTENCIA,
+    ROMPIMENTO_TRIANGULO,
+    ROMPIMENTO_RETANGULO,
+    TOPO_DUPLO,
+    TOPO_TRIPLO,
+    FUNDO_DUPLO,
+    FUNDO_TRIPLO,
+}

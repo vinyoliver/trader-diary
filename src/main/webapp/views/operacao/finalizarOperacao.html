@@ -1,0 +1,67 @@
+<div class="modal" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span ng-click="$hide()" aria-hidden="true">&times;</span>
+					<span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" translate>view.encerramento.operacao</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div id="alert-message" class="alert-message">
+					</div>
+				</div>
+				<form novalidate id="operacaoForm" name="operacaoForm" role="form">
+					<div class="row">
+						<div class="col-md-3">
+							<carousel images="imagensSaida" entidade="model"
+									  show-add="imagensSaida.length < 6"
+									  show-remove="imagensSaida.length > 0"
+									  show-zoom="imagensSaida.length > 0" show-control="false" id="2"/>
+						</div>	
+						<div class="col-md-9">
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="precoSaida" translate>view.valor.saida</label>
+                                        <span class="form-required"> *</span>
+										<input name="precoSaida" type="text" class="form-control"
+                                               ng-model="model.precoSaida" ui-money-mask ng-required="true"/>
+									</div>
+								</div>
+								<div class="col-lg-5">
+									<div class="form-group">
+										<label translate>view.inicio</label>
+										<span class="form-required"> *</span>
+										<date-time ng-model="model.dataTermino" name="dataTermino" id="dataTermino"
+												   max-date="today"
+												   ng-required="true"/>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="form-group">
+										<label for="ferramentas" translate>view.observacao.saida</label>
+										<textarea id="ferramentas" name="observacao" class="form-control"
+												  ng-model="model.descricaoTermino"
+												  cols="100" rows="10"
+												  placeholder="Descreva sobre o encerramento do trade" maxlength="800"/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" data-dismiss="modal" class="btn btn-default" ng-click="$hide()"><span class="glyphicon glyphicon-remove"></span>&nbsp;Fechar</button>
+				<button ng-disabled="operacaoForm.$invalid" type="button" class="btn btn-verde"
+						ng-click="finalizarOperacao()"><span class="glyphicon glyphicon-ok"></span>&nbsp;Salvar
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

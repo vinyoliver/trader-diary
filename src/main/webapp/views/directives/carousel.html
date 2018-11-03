@@ -1,0 +1,47 @@
+<div class="form-group" ng-controller="CarouselAppController">
+
+	<img src="img/image-default.png" style="width: 300px; height: 220px"  ng-if="images.length == 0" />
+	
+	<div id="{{id}}_myCarousel" class="carousel slide" data-ride="carousel"
+		ng-if="images.length > 0" data-interval="false">
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner lightgallery" role="listbox">
+			<div ng-repeat="image in images" ng-class="image.active"
+				 style="width: auto; max-height: 300px; overflow: hidden; position:relative;"
+				 on-finish-render="ngRepeatFinished">
+				<div class="paginacao-imagem">{{images.indexOf(image)+1}} de {{images.length}} </div>
+				<a ng-href="{{image.src}}" data-exthumbimage="{{image.srcSmall}}" class="light-link">
+					<img ng-src="{{image.id ? image.srcSmall : image.src}}" style="width:400px;"
+						 id="{{id}}{{images.indexOf(image)}}" class="group_{{id}}"/>
+				</a>
+			</div>
+		</div>
+		<!-- Left and right controls -->
+		<span class="left carousel-control" data-slide="prev" ng-click="scrollImage('prev', id)" ng-if="showControl">
+			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
+		</span>
+		<span class="right carousel-control" data-slide="next" ng-click="scrollImage('next', id)" ng-if="showControl">
+			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			<span class="sr-only">Next</span> 
+		</span>
+	</div>
+
+	<div style="margin-top:3px;">
+		<input id="{{id}}_addImage" name="addImage" class="btn btn-default"
+			   ngf-select="uploadImage($files)" ngf-accept="'image/*'"
+			   ngf-multiple="true"
+			   ngf-resize="{width: 1280, quality: 0.8, type: 'image/jpeg'}"
+			   ngf-fix-orientation="true"
+			   type="file" title="Adicionar Imagem" style="display: none;"/>
+		<label class="btn btn-verde" for="{{id}}_addImage" ng-if="showAdd"><span class="glyphicon glyphicon-plus"></label>
+		<button id="{{id}}_removeImage" class="btn btn-verde"
+				ng-click="removeImage(id)" ng-if="showRemove" type="button">
+			<span class="glyphicon glyphicon-trash" title="Remover Imagem" />
+		</button>
+		<!--<button id="{{id}}_zoom" class="btn btn-verde"-->
+		<!--ng-click="openModalZoomImagem()" ng-if="showZoom" type="button">-->
+		<!--<span class="glyphicon glyphicon-zoom-in" title="Ampliar Imagem" />-->
+		<!--</button>-->
+	</div>
+</div>

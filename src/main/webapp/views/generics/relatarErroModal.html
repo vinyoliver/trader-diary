@@ -1,0 +1,71 @@
+<div class="modal" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span ng-click="$hide()" aria-hidden="true">&times;</span>
+					<span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" translate>Canal de Comunicação</h4>
+			</div>
+			<div class="clearfix"></div>
+			<div class="modal-body">
+
+				<div class="col-md-12">
+				  <strong>Prezado usuário</strong>, visando estabelecer um canal de contato direto com a equipe de desenvolvimento do sistema, este formulário destina-se ao relato de informações, sugestões ou erros. Sinta-se à vontade para utilizá-lo!
+				  <form>
+			      <div class="col-sm-12">
+				    <div class="lead" style="margin:5px 0;">Tipo de Mensagem </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			           <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+			           Informação
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+			            Erro
+			          </label>
+			        </div>
+			        <div class="form-check">
+			          <label class="form-check-label">
+			            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
+			            Sugestão
+			          </label>
+			        </div>
+			      </div>
+			    <div class="form-group">
+			      <div class="col-sm-12">
+				    <div class="lead" style="margin:5px 0;">Deixe sua mensagem</div>
+			        <textarea class="form-control" style="height: 100px"></textarea>
+			      </div>
+			    </div>
+			    <div class="form-group">
+			      <div class="col-sm-12">
+				    <div class="lead" style="margin:5px 0;">URL</div>
+			        <input class="form-control" type="text" id="url" name="inputUrl" readonly>
+			      </div>
+			    </div>
+		      	<hr>
+			    <div class="clearfix"></div>
+				<br/>
+				<div class="modal-footer">
+				    <div class="form-group">
+				      <div class=" col-md-12 text-right">
+				        <button type="submit" class="btn btn-verde"><span class="glyphicon glyphicon-ok"></span>&nbsp;Enviar</button>
+				      </div>
+				    </div>				
+				</div>				
+			  </form>
+				</div>
+			<div class="clearfix"></div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+ var minhaUrl = $(location).attr('href');
+ document.querySelector("[name='inputUrl']").value = minhaUrl;
+</script>

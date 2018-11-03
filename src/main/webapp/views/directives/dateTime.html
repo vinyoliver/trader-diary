@@ -1,0 +1,34 @@
+<div class="input-group" ng-controller="DateTimeAppController">
+    <div style="width:60%; float:left;" class="icon-placeholder-date-time">
+        <i class="date-time-icon glyphicon glyphicon-calendar"></i>
+		<input id="{{id}}_date" name="{{id}}_date" type="text"
+               class="form-control dateTime input-date"
+               data-date-type="string"
+               data-model-date-format="yyyy-MM-dd"
+               data-date-format="dd/MM/yyyy"
+               data-autoclose="1" bs-datepicker data-min-date="{{minDate}}" data-max-date="{{maxDate}}"
+               ng-model="dateTime.date"
+               placeholder="{{placeholder}}"
+               ng-change="change(this)"
+               ng-required="ngRequired"
+               ng-blur="blur($event)"
+               ng-disabled="ngDisabled" />
+
+	</div>
+    <div style="width:40%; float:left;" class="icon-placeholder-date-time">
+        <i class="date-time-icon glyphicon glyphicon-time"></i>
+		<input class="form-control input-time"
+               ng-model="dateTime.time"
+               name="{{id}}_time"
+               id="{{id}}_time"
+               data-length="1"
+               placeholder="HH:mm"
+               ng-required="ngRequired"
+               type="text"
+               ui-time-mask="short"
+               ng-disabled="ngDisabled"
+               round-display="true"
+               ng-change="change(this)"
+               ng-blur="blur($event)">
+	</div>
+</div>

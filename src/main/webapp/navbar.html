@@ -1,0 +1,68 @@
+<nav class="navbar navbar-principal navbar-inverse fixo" ng-if="isAuthenticated()">
+    <div class="container-fluid">
+        <div class="menu-hamburger pull-left">
+            <span class="glyphicon glyphicon-menu-hamburger"></span>
+        </div>
+
+        <ul class="nav navbar-nav">
+            <li><a ui-sref="home" translate>Home</a>
+            <li><a ui-sref="operacao" translate>view.operacao</a>
+        </ul>
+
+        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="glyphicon glyphicon-option-vertical"></span>
+        </button>
+        <span class="notificacao pull-right hidden-sm">
+				      	<a ui-sref="notificacao"><span class="glyphicon glyphicon-envelope"></span>
+				      	<span class="badge badge-notify">{{numberNotifications}}</span>
+				      	</a>
+				    </span>
+        <div id="navbarCollapse" class="collapse navbar-collapse navbar-right">
+            <ul class="nav navbar-nav">
+
+                <li class="hidden-xs">
+                    <div class="dropdown">
+                        <a data-toggle="dropdown"
+                           class="dropdown-toggle"><span>{{getNomeUsuarioLogado()}}</span><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li ng-show="podeTrocarUnidade()"><a ng-click="verificaUnidade(true)"
+                                                                 class="item-menu"><span
+                                    class="glyphicon glyphicon-retweet"></span>&nbsp;<span
+                                    translate>view.altera.unidade</span></a>
+                            </li>
+                            <li><a ng-click="alterarSenha()" class="item-menu"><span
+                                    class="glyphicon glyphicon-lock"></span>&nbsp;<span
+                                    translate>view.altera.senha</span></a>
+                            </li>
+                            <li><a ui-sref="contato" class="item-menu"><span
+                                    class="glyphicon glyphicon-earphone"></span>&nbsp;<span
+                                    translate>view.contato</span></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="hidden-sm">
+                    <a ui-sref="contato"><span class="glyphicon glyphicon-earphone"></span>&nbsp;&nbsp;Contato</a>
+                </li>
+                <li class="hidden-sm">
+                    <a ng-click="verificaUnidade(true)"><span class="glyphicon glyphicon-retweet"></span>&nbsp;&nbsp;Trocar
+                        Unidade</a>
+                </li>
+                <li class="hidden-sm">
+                    <a ng-click="alterarSenha()"><span class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;Alterar
+                        Senha</a>
+                </li>
+                <li><a href="/logout" class="logout" data-placement="bottom"><span
+                        class="glyphicon glyphicon-off " uib-tooltip="Sair"
+                        tooltip-placement="bottom"></span>&nbsp; <span class="hidden-sm">Sair</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class=" notificacao navbar-itens pull-right hidden-xs">
+            <a ui-sref="notificacao"><span class="glyphicon glyphicon-envelope" uib-tooltip="Notificações"
+                                           tooltip-placement="bottom"></span>
+                <span class="badge badge-notify">{{numberNotifications}}</span>
+            </a>
+        </div>
+	</div>
+</nav>

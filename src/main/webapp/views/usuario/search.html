@@ -1,0 +1,116 @@
+<div class="page-header">
+	<h3><span translate>view.usuario</span>&nbsp;
+			<a id="create" name="create" class="btn btn-verde" uib-tooltip="Cadastrar Novo Usuário"
+						   has-role="ROLE_EDITAR_USUARIO"
+						   ui-sref="usuario.create"><span class="glyphicon glyphicon-plus"></span></a>	
+   	   <span class="small">&nbsp;[&nbsp;<a ui-sref="home">Voltar&nbsp;<i class="fa fa-reply" aria-hidden="true"></i></a>&nbsp;] </span>
+	</h3>
+</div>
+<div class="container-fluid">
+<div class="panel">
+	<div class="panel-heading" ><h4><span class="glyphicon glyphicon-search"></span>&nbsp;<span translate>view.filtro</span></h4></div>
+	<div class="panel-body">
+		<form novalidate id="UsuarioSearch">
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label for="nome" translate>view.nome</label>
+						<input id="nome" name="nome" class="form-control" type="text" ng-model="filters.nome"
+							   uppercase
+							   placeholder="Informe o nome" autocomplete="off"></input>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="cpf" translate>view.cpf</label>
+						<input id="cpf" name="cpf" class="form-control" type="text" ng-model="filters.cpf"
+							   ui-mask="999.999.999-99" autocomplete="off"></input>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label for="status" translate>view.perfil</label>
+						<ui-select ng-model="filters.perfilId" name="perfil" id="perfil">
+							<ui-select-match placeholder='---'>{{$select.selected.nome}}</ui-select-match>
+							<ui-select-choices repeat="perfil.id as perfil in perfis | filter: $select.search">
+								<span ng-bind-html="perfil.nome"></span>
+							</ui-select-choices>
+						</ui-select>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label for="status" translate>view.status</label>
+						<select class="form-control" ng-model="filters.ativo" id="status">
+							<option value="true">ATIVOS</option>
+							<option value="false">INATIVOS</option>
+							<option value="">TODOS</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<hr/>
+			<div class="row">
+				<div class="form-group">
+					<div class="col-md-12 col-xs-12 barra-comandos">
+						<a id="Clean" name="Clean" class="btn btn-default"
+						   ng-click="clearFilters()"><span class="glyphicon glyphicon-erase"></span> Limpar</a>
+						<button id="Search" name="Search" class="btn btn-verde" ng-click="pesquisar()"><span
+								class="glyphicon glyphicon-search"></span> Pesquisar</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="panel">
+	<div class="panel-body table-resultados">
+		<div ng-show="(totalResults == 0)" class="well" translate>
+			info.nenhum.registro
+		</div>
+		<div translate translate-values="{total:totalResults}">view.resultado</div>
+		<table ng-table="tableParams" class="table ng-table-responsive table-hover"
+			   ng-show="(totalResults > 0)">
+			<tr ng-repeat="usuario in $data">
+				<td data-title="'Nome'">
+					{{usuario.nome}} {{usuario.sobrenome}}
+				</td>
+				<td data-title="'CPF'">
+					{{usuario.cpf | cpf}}
+				</td>
+				<td data-title="'Perfil'">
+					{{usuario.perfil.nome}}
+				</td>
+				<td data-title="'Ativo'">
+					{{usuario.ativo | boolYesNo}}
+				</td>
+				<td data-title="'Ações'">
+					<a role="button" class="btn btn-azul" ui-sref="usuario.edit({usuarioId: usuario.id})" data-toggle="tooltip" data-placement="bottom" title="Editar"
+					   has-role="ROLE_EDITAR_USUARIO">
+						<span class="glyphicon glyphicon-pencil"></span>
+					</a>
+					<a role="button" class="btn btn-azul" ui-sref="usuario.view({usuarioId: usuario.id})" data-toggle="tooltip" data-placement="bottom" title="Visualizar">
+						<span class="glyphicon glyphicon-eye-open"></span> 
+					</a>
+					<a role="button" ng-show="usuario.ativo" class="btn btn-azul" data-toggle="tooltip" data-placement="bottom" title="Desativar"
+					   has-role="ROLE_EDITAR_USUARIO" ng-hide="getIdUsuarioLogado() == usuario.id"
+					   ng-click="desativar(usuario)">
+						<span class="glyphicon glyphicon-remove"></span> 
+					</a>
+					<a role="button" ng-hide="usuario.ativo" class="btn btn-azul" data-toggle="tooltip" data-placement="bottom" title="Ativar"
+					   has-role="ROLE_EDITAR_USUARIO"
+					   ng-click="ativar(usuario)">
+						<span class="glyphicon glyphicon-ok"></span> 
+					</a>
+					<a role="button" class="btn btn-azul" uib-tooltip="Alterar Senha"
+					   has-role="ROLE_ALTERAR_SENHA"
+					   ng-click="alterarSenha(usuario.id)">
+						<span class="glyphicon glyphicon-lock"></span> 
+					</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+</div>

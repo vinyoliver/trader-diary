@@ -1,0 +1,22 @@
+<div class="panel">
+	<div class="panel-body table-resultados">
+		<div ng-show="(totalNotificacoes == 0)" class="well" translate>
+			info.nenhum.registro
+		</div>
+		<table ng-table="tableNotificacoes" class="table ng-table-responsive table-hover" ng-show="(totalNotificacoes > 0)">
+			<tr ng-repeat="notificacaoUsuario in $data">
+				<td data-title="'Assunto'"> {{notificacaoUsuario.notificacao.titulo}} {{notificacaoUsuario.notificacao.descricaoTipo}}</span></td>
+				<td data-title="'Data/Hora de Envio'" style="width:20%;">{{notificacaoUsuario.notificacao.dataEnvio | dataHora}}</td>
+				<td data-title="'Data/Hora da Leitura'" style="width:20%;">{{notificacaoUsuario.dataLeitura |
+					dataHoraShort}}
+				</td>
+				<td data-title="'Ações'">
+					<a role="button" class="btn btn-azul"
+					   ng-click="showMsg(notificacaoUsuario)" data-toggle="tooltip" data-placement="bottom" title="Visualizar Mensagem">
+						<span class="glyphicon glyphicon-eye-open"></span>
+					</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

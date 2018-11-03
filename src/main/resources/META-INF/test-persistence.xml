@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+			 version="2.1">
+
+	<persistence-unit name="appPU">
+		<jta-data-source>jdbc/arquillian</jta-data-source>
+		<properties>
+			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.cache.use_second_level_cache" value="false"/>
+			<!-- TODO se der lazy ou tiver multiples bags tentar ativar essa prop -->
+			<property name="hibernate.enable_lazy_load_no_trans" value="true"/>
+			<property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/appEntityManagerFactory"/>
+			<property name="jboss.entity.manager.jndi.name" value="java:/appEntityManager"/>
+		</properties>
+	</persistence-unit>
+
+</persistence>
